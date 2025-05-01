@@ -1,14 +1,18 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class PlayerMovement : MonoBehaviour
+public class Player : MonoBehaviour
 {
+    private int health = 5;
 
     public float speed = 5f;
     public float jumpForce = 10f;
     public bool isJumping = false;
+    public GameObject axes;
 
     private float moveInput;
     private Rigidbody2D rb2d;
+    private InputAction throwAxe;
 
     void Start()
     {
@@ -20,7 +24,6 @@ public class PlayerMovement : MonoBehaviour
     {
         moveInput = Input.GetAxis("Horizontal");
 
-        // เคลื่อนที่ซ้าย-ขวา
         rb2d.linearVelocity = new Vector2(moveInput * speed, rb2d.linearVelocity.y);
 
         if (Input.GetButtonDown("Jump") && !isJumping)
@@ -32,7 +35,6 @@ public class PlayerMovement : MonoBehaviour
     }// Update
 
 
-    // เมื่อตัวละครสัมผัสพื้น
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.CompareTag("Ground"))
@@ -42,7 +44,6 @@ public class PlayerMovement : MonoBehaviour
     }//OnCollisionEnter2D
 
 
-    // เมื่อตัวละครออกจากพื้น
     private void OnCollisionExit2D(Collision2D other)
     {
         if (other.gameObject.CompareTag("Ground"))
@@ -51,4 +52,22 @@ public class PlayerMovement : MonoBehaviour
         }
     }//OnCollisionExit2D
 
-}//PlayerMovement
+    void ThrowAxe()
+    {
+
+    }
+
+    void TakeDamages(int damageTaken)
+    {
+        health -= damageTaken;
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
+
+    void Die()
+    {
+        Destroy(gameObject);
+    }
+}
