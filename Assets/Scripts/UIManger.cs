@@ -1,18 +1,31 @@
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+using UnityEngine.SceneManagement;
 
 public class UIManger : MonoBehaviour
 {
-    
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void GotoMainMenu()
     {
-        
+        SceneManager.LoadScene(0);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void GotoNextScene()
     {
-        
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+
+        SceneManager.LoadSceneAsync(currentSceneIndex + 1, LoadSceneMode.Single);
+    }
+
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
+
+    public void ReStart()
+    {
+        var activeScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(activeScene.name);
     }
 }

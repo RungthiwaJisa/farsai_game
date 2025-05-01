@@ -2,24 +2,32 @@ using UnityEngine;
 
 public class Enemies : MonoBehaviour
 {
-    private int Health = 200;
+    private int Health = 20;
 
+    public Transform[] movePoint;
     public GameObject dropItem;
     public int damages = 1;
     public int speed = 20;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()
     {
         
     }
-    
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision != null)
+        {
+            Player play = collision.gameObject.GetComponent<Player>();
+
+            if (collision.gameObject.CompareTag("Player"))
+            {
+                play.TakeDamages(damages);
+            }
+        }
+    }
+
     public void TakeDamages(int damageTaken)
     {
         Health -= damageTaken;
@@ -34,5 +42,10 @@ public class Enemies : MonoBehaviour
         Instantiate(dropItem);
 
         Destroy(gameObject);
+    }
+
+    void Move()
+    {
+        transform.Translate(transform.position);
     }
 }

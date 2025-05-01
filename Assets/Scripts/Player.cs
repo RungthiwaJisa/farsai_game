@@ -1,3 +1,4 @@
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,8 +9,11 @@ public class Player : MonoBehaviour
     public float speed = 5f;
     public float jumpForce = 10f;
     public bool isJumping = false;
-    public GameObject axes;
-
+    public Rigidbody2D axes;
+    public Transform shootPoint;
+    public bool win;
+    
+    private PlayerInventory inventoryPlater;
     private float moveInput;
     private Rigidbody2D rb2d;
     private InputAction throwAxe;
@@ -17,6 +21,8 @@ public class Player : MonoBehaviour
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
+        throwAxe = InputSystem.actions.FindAction("Throw");
+        inventoryPlater = rb2d.GetComponent<PlayerInventory>();
     }// Start
 
 
@@ -31,7 +37,15 @@ public class Player : MonoBehaviour
             rb2d.AddForce(new Vector2(rb2d.linearVelocity.x, jumpForce));
 
         }
+        if (throwAxe.triggered)
+        {
+            StartCoroutine(DistanceAxe());
+        }
 
+        if (inventoryPlater.inventory["Tomato"] == 3 && inventoryPlater.inventory["Potato"] == 3 && inventoryPlater.inventory["Meat"] == 3 && !win)
+        {
+            win = true;
+        }
     }// Update
 
 
@@ -52,12 +66,20 @@ public class Player : MonoBehaviour
         }
     }//OnCollisionExit2D
 
-    void ThrowAxe()
+    Vector2 ThrowAxe(Vector2 origin, float targetX, float targetY, float time)
     {
+        float distanceX = targetX - origin.x;
+        float distanceY = targetY - origin.y;
 
+        // คำนวณความเร็วที่ต้องการในแต่ละแกน
+        float velocityX = -distanceX / time;
+        float velocityY = distanceY / time + 0.5f * Mathf.Abs(Physics2D.gravity.y) * time;
+
+        // คืนค่าเป็น Vector2
+        return new Vector2(velocityX, velocityY);
     }
 
-    void TakeDamages(int damageTaken)
+    public void TakeDamages(int damageTaken)
     {
         health -= damageTaken;
         if (health <= 0)
@@ -69,5 +91,36 @@ public class Player : MonoBehaviour
     void Die()
     {
         Destroy(gameObject);
+    }
+
+    IEnumerator DistanceAxe()
+    {
+        float distances = 0;
+        float chargingTime = 0;
+
+        while (throwAxe.IsPressed())
+        {
+            chargingTime += Time.deltaTime * 2;
+            distances += Time.deltaTime;
+            yield return null;
+
+            if (chargingTime > 2)
+            {
+                break;
+            }
+        }
+
+        if (chargingTime < 2)
+        {
+            yield break;
+        }
+
+        Vector2 projectileVelocity = ThrowAxe(shootPoint.position,distances,distances,chargingTime);
+
+        Rigidbody2D firedBullet = Instantiate(axes, shootPoint.position, Quaternion.identity);
+
+        firedBullet.linearVelocity = projectileVelocity;
+
+        Destroy(firedBullet,5);
     }
 }

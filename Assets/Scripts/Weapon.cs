@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    private int damages;
+    private int damages = 20;
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
