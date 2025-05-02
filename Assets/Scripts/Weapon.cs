@@ -13,9 +13,9 @@ public class Weapon : MonoBehaviour
             if (collision.gameObject.CompareTag("Enemy"))
             {
                 en.TakeDamages(damages);
-
-                Destroy(gameObject);
             }
         }
+
+        Destroy(this.gameObject,2);
     }
 }

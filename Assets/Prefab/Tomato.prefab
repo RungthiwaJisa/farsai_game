@@ -137,6 +137,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7f9a7bc711588c4698636a283af8b3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: Tomatoe
-  value: 1
+  itemName: Tomato
   destroyOnPickup: 1

@@ -2,8 +2,8 @@
 
 public class CollectingItems: MonoBehaviour
 {
-    [SerializeField] private string itemName = "Item";
-    [SerializeField] private int value = 1;
+    [SerializeField] private string itemName;
+    private int value = 1;
     [SerializeField] private bool destroyOnPickup = true;
 
     private void OnTriggerEnter2D(Collider2D other)

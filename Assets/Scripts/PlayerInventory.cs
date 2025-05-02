@@ -26,18 +26,9 @@ public class PlayerInventory : MonoBehaviour
 
     private void UpdateInventoryUI()
     {
-        if (inventory.ContainsKey("Tomato"))
-        {
-            Updatetomatoes(inventory["Tomato"]);
-        }
-        else if (inventory.ContainsKey("Potato"))
-        {
-            UpdatePotatoes(inventory["Potato"]);
-        }
-        else if (inventory.ContainsKey("Meat"))
-        {
-            UpdateMeats(inventory["Meat"]);
-        }
+        UpdatePotatoes(GetItemCount("Potato"));
+        Updatetomatoes(GetItemCount("Tomato"));
+        UpdateMeats(GetItemCount("Meat"));
     }
 
     public bool HasItem(string itemName, int amount = 1)

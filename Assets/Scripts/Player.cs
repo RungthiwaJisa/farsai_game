@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     public float speed = 5f;
     public float jumpForce = 10f;
     public bool isJumping = false;
-    public Rigidbody2D axes;
+    public GameObject axes;
     public Transform shootPoint;
     public bool win;
     
@@ -115,12 +115,13 @@ public class Player : MonoBehaviour
             yield break;
         }
 
+
         Vector2 projectileVelocity = ThrowAxe(shootPoint.position,distances,distances,chargingTime);
 
-        Rigidbody2D firedBullet = Instantiate(axes, shootPoint.position, Quaternion.identity);
+        Rigidbody2D firedBullet = Instantiate(axes.GetComponent<Rigidbody2D>(), shootPoint.position, Quaternion.identity);
 
         firedBullet.linearVelocity = projectileVelocity;
 
-        Destroy(firedBullet,5);
+        Destroy(firedBullet,1);
     }
 }
