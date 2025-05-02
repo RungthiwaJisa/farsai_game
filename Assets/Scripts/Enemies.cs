@@ -2,7 +2,7 @@
 
 public class Enemies : MonoBehaviour
 {
-    private int Health = 20;
+    private int Health = 100;
     private Vector2 velocity = new Vector2(-10,0);
 
     public Rigidbody2D rb;
@@ -42,7 +42,7 @@ public class Enemies : MonoBehaviour
 
     void Die()
     {
-        Instantiate(dropItem);
+        Instantiate(dropItem,transform.position,Quaternion.identity);
 
         Destroy(gameObject);
     }

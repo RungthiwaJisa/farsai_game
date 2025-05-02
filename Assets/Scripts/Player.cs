@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,40 +12,48 @@ public class Player : MonoBehaviour
     public bool isJumping = false;
     public GameObject axes;
     public Transform shootPoint;
-    public bool win;
-    
-    private PlayerInventory inventoryPlater;
+    public UIManger ui;
+    public PlayerInventory inventoryPlater;
+
     private float moveInput;
     private Rigidbody2D rb2d;
     private InputAction throwAxe;
+    public InputAction setting;
+
+    public bool isGamePause;
+    public bool isGameOver;
+    public bool isGameWin;
 
     void Start()
     {
+        ui.HealthDisplay(health);
+
         rb2d = GetComponent<Rigidbody2D>();
         throwAxe = InputSystem.actions.FindAction("Throw");
+        setting = InputSystem.actions.FindAction("Setting");
+
         inventoryPlater = rb2d.GetComponent<PlayerInventory>();
     }// Start
 
 
     void Update()
     {
-        moveInput = Input.GetAxis("Horizontal");
-
-        rb2d.linearVelocity = new Vector2(moveInput * speed, rb2d.linearVelocity.y);
-
-        if (Input.GetButtonDown("Jump") && !isJumping)
+        if (!isGameOver && !isGameWin && !isGamePause)
         {
-            rb2d.AddForce(new Vector2(rb2d.linearVelocity.x, jumpForce));
+            moveInput = Input.GetAxis("Horizontal");
 
-        }
-        if (throwAxe.triggered)
-        {
-            StartCoroutine(DistanceAxe());
-        }
+            rb2d.linearVelocity = new Vector2(moveInput * speed, rb2d.linearVelocity.y);
 
-        if (inventoryPlater.inventory["Tomato"] == 3 && inventoryPlater.inventory["Potato"] == 3 && inventoryPlater.inventory["Meat"] == 3 && !win)
-        {
-            win = true;
+            if (Input.GetButtonDown("Jump") && !isJumping)
+            {
+                rb2d.AddForce(new Vector2(rb2d.linearVelocity.x, jumpForce));
+
+            }
+            if (throwAxe.triggered)
+            {
+                StartCoroutine(DistanceAxe());
+            }
+
         }
     }// Update
 
@@ -82,6 +91,8 @@ public class Player : MonoBehaviour
     public void TakeDamages(int damageTaken)
     {
         health -= damageTaken;
+        ui.HealthDisplay(health);
+
         if (health <= 0)
         {
             Die();
