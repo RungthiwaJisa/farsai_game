@@ -12,6 +12,14 @@ public class UIManger : MonoBehaviour
     public GameObject winScreen;
     public GameObject settingScreen;
 
+    private void Start()
+    {
+        lossScreen.SetActive(false);
+        winScreen.SetActive(false);
+        settingScreen.SetActive(false);
+
+        Time.timeScale = 1;
+    }
 
     void Update()
     {

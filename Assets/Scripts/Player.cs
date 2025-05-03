@@ -133,6 +133,6 @@ public class Player : MonoBehaviour
 
         firedBullet.linearVelocity = projectileVelocity;
 
-        Destroy(firedBullet,1);
+        Destroy(firedBullet,3);
     }
 }

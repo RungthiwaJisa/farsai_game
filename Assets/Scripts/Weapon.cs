@@ -16,6 +16,6 @@ public class Weapon : MonoBehaviour
             }
         }
 
-        Destroy(this.gameObject,2);
+        Destroy(gameObject,3);
     }
 }
